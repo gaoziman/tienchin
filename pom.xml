@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>org.javaboy</groupId>
+    <groupId>org.javatop</groupId>
     <artifactId>tienchin</artifactId>
     <version>0.0.1</version>
 
@@ -166,35 +166,35 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>org.javaboy</groupId>
+                <groupId>org.javatop</groupId>
                 <artifactId>tienchin-quartz</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>org.javaboy</groupId>
+                <groupId>org.javatop</groupId>
                 <artifactId>tienchin-generator</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>org.javaboy</groupId>
+                <groupId>org.javatop</groupId>
                 <artifactId>tienchin-framework</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>org.javaboy</groupId>
+                <groupId>org.javatop</groupId>
                 <artifactId>tienchin-system</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>org.javaboy</groupId>
+                <groupId>org.javatop</groupId>
                 <artifactId>tienchin-common</artifactId>
                 <version>${tienchin.version}</version>
             </dependency>

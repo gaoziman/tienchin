@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>tienchin</artifactId>
-        <groupId>org.javaboy</groupId>
+        <groupId>org.javatop</groupId>
         <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -55,7 +55,7 @@
 
         <!-- 系统模块-->
         <dependency>
-            <groupId>org.javaboy</groupId>
+            <groupId>org.javatop</groupId>
             <artifactId>tienchin-system</artifactId>
         </dependency>
 
