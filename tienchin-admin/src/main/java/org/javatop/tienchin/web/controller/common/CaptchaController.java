@@ -39,7 +39,11 @@ public class CaptchaController {
     @Autowired
     private ISysConfigService configService;
 
+
     /**
+     * @param response 响应
+     * @return {@link AjaxResult} 返回结果
+     * @throws IOException
      * 生成验证码
      */
     @GetMapping("/captchaImage")

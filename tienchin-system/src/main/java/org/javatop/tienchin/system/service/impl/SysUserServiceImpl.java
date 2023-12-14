@@ -64,7 +64,6 @@ public class SysUserServiceImpl implements ISysUserService {
     /**
      * 根据条件分页查询用户列表
      *
-     * @param user 用户信息
      * @return 用户信息集合信息
      */
     @Override
@@ -470,15 +469,22 @@ public class SysUserServiceImpl implements ISysUserService {
                 // 验证是否存在这个用户
                 SysUser u = userMapper.selectUserByUserName(user.getUserName());
                 if (StringUtils.isNull(u)) {
+                    //验证用户信息
                     BeanValidators.validateWithException(validator, user);
+                    //加密密码
                     user.setPassword(SecurityUtils.encryptPassword(password));
+                    //设置创建者
                     user.setCreateBy(operName);
+                    //插入用户
                     this.insertUser(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 导入成功");
                 } else if (isUpdateSupport) {
+                    //验证用户信息
                     BeanValidators.validateWithException(validator, user);
+                    //设置更新者
                     user.setUpdateBy(operName);
+                    //更新用户
                     this.updateUser(user);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 更新成功");
@@ -493,10 +499,14 @@ public class SysUserServiceImpl implements ISysUserService {
                 log.error(msg, e);
             }
         }
+        //如果导入失败的数量大于0
         if (failureNum > 0) {
+            //将错误信息添加到错误消息中
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            //抛出服务异常
             throw new ServiceException(failureMsg.toString());
         } else {
+            //将成功信息添加到成功消息中
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();

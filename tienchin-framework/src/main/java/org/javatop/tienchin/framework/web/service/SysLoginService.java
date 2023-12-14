@@ -71,15 +71,21 @@ public class SysLoginService {
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
             if (e instanceof BadCredentialsException) {
+                // Record login information
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                // Throw an exception
                 throw new UserPasswordNotMatchException();
             } else {
+                // Record login information
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, e.getMessage()));
+                // Throw an exception
                 throw new ServiceException(e.getMessage());
             }
         }
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        //获取登录用户信息
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        //记录登录信息
         recordLoginInfo(loginUser.getUserId());
         // 生成token
         return tokenService.createToken(loginUser);
@@ -95,12 +101,16 @@ public class SysLoginService {
      */
     public void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = Constants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+        //从redis中获取验证码
         String captcha = redisCache.getCacheObject(verifyKey);
+        //删除验证码
         redisCache.deleteObject(verifyKey);
+        //如果验证码为空，则抛出验证码过期异常
         if (captcha == null) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
             throw new CaptchaExpireException();
         }
+        //如果输入的验证码不正确，则抛出验证码错误异常
         if (!code.equalsIgnoreCase(captcha)) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
             throw new CaptchaException();
@@ -115,8 +125,11 @@ public class SysLoginService {
     public void recordLoginInfo(Long userId) {
         SysUser sysUser = new SysUser();
         sysUser.setUserId(userId);
+        //获取登录IP地址
         sysUser.setLoginIp(IpUtils.getIpAddr(ServletUtils.getRequest()));
+        //设置登录日期
         sysUser.setLoginDate(DateUtils.getNowDate());
+        //更新用户信息
         userService.updateUserProfile(sysUser);
     }
 }
